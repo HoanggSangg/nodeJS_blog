@@ -16,7 +16,11 @@
     <table class="table mt-4">
         <thead>
             <tr>
-                <th colspan="2">#</th>
+                <th></th>
+                <th>
+                    ID
+                    {{{sortable '_id' _sort}}}
+                </th>
                 <th scope="col">
                     Tên khóa học
                     {{{sortable 'name' _sort}}}
@@ -37,7 +41,7 @@
                         <input class="form-check-input" type="checkbox" name="courseIds[]" value="{{this._id}}">
                     </div>
                 </th>
-                <th scope="row">{{sum @index 1}}</th>
+                <th scope="row">{{this._id}}</th>
                 <td>{{this.name}}</td>
                 <td>{{this.description}}</td>
                 <td>{{this.createdAt}}</td>

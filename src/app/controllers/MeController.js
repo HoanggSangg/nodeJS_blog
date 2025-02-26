@@ -6,25 +6,8 @@ class MeController {
 
     //[GET] /me/stored/courses
     storedCourses(req, res, next) {
-
-        let courseQuery = Course.find({});
-
-        //Sort table
-        if(req.query.hasOwnProperty('_sort')) {
-            const isValidType = ['asc', 'desc'].includes(req.query.type);
-            const sortColumn = req.query.column?.trim();
-            
-            if(sortColumn) {
-                courseQuery = courseQuery.sort({
-                    [req.query.column] : isValidType ? req.query.type : 'desc',
-                });
-            }else{
-                return res.status(400).json({ error: "Thiếu column để sắp xếp." });
-            }
-        }
-
         Promise.all([
-            courseQuery.lean(), // Dùng `.lean()` để lấy plain objects
+            Course.find({}).sortable(req).lean(), // Dùng `.lean()` để lấy plain objects
             Course.countDocumentsWithDeleted({ deleted: true }),
         ])
             .then(([courses, deleteCount]) => {

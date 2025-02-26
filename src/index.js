@@ -4,11 +4,11 @@ const { engine } = require('express-handlebars');
 const route = require('./routes/indexRoute');
 const methodOverride = require('method-override');
 
-const sortMiddleware = require('./app/middlewares/sortMiddleware');
 const path = require('path');
 const app = express();
 const port = 3000;
 const db = require('./config/db/indexConfig');
+const sortMiddleware = require(path.resolve(__dirname, 'app/middlewares/sortMiddleware'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({
@@ -23,29 +23,7 @@ app.use(morgan('combined'));
 // Templete engine
 app.engine('hbs', engine({
     extname: '.hbs',
-    helpers: {
-        sum: (a, b) => a + b,
-        sortable: (field, sort) => {
-            const currenType = field === sort.column ? sort.type : 'default';
-            const icons = {
-                default: 'bi bi-filter-square-fill',
-                asc: 'bi bi-sort-up',
-                desc: 'bi bi-sort-down',
-            };
-            const types = {
-                default: 'desc',
-                asc: 'desc',
-                desc: 'asc',
-            };
-
-            const icon = icons[currenType];
-            const type = types[currenType];
-
-            return `<a href="?_sort&column=${field}&type=${type}">
-                        <span class="${icon}"></span>
-                    </a>`;
-        }
-    }
+    helpers: require('./helps/handlebars')
 }));
 
 app.use(sortMiddleware);
