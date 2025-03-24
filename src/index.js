@@ -23,7 +23,7 @@ app.use(morgan('combined'));
 // Templete engine
 app.engine('hbs', engine({
     extname: '.hbs',
-    helpers: require('./helps/handlebars')
+    helpers: require('./helps/handlebars'),
 }));
 
 app.use(sortMiddleware);
